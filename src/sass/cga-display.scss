@@ -1,0 +1,102 @@
+@import './colours.scss';
+
+@mixin cga-text($color) {
+    color: $color;
+    text-shadow: 0rem 0.2rem 1rem lighten($color, 20%);
+}
+
+
+
+$cga-colours-map: (
+    'black': $cga-black,
+    'blue': $cga-blue,
+    'green': $cga-green,
+    'cyan': $cga-cyan,
+    'red': $cga-red,
+    'magenta': $cga-magenta,
+    'brown': $cga-brown,
+    'light-gray': $cga-light-gray,
+    'dark-gray': $cga-dark-gray,
+    'light-blue': $cga-light-blue,
+    'light-green': $cga-light-green,
+    'light-cyan': $cga-light-cyan,
+    'light-red': $cga-light-red,
+    'light-magenta': $cga-light-magenta,
+    'yellow': $cga-yellow,
+    'white': $cga-white
+);
+
+@mixin cga-colours-gen {
+    @each $name, $colour in $cga-colours-map {
+        .cga-#{$name} {
+            @include cga-text($colour);
+        }
+    }
+}
+@include cga-colours-gen();
+
+/*
+.cga-black {
+    @include cga-text($cga-black);
+}
+
+.cga-blue {
+    @include cga-text($cga-blue);
+}
+
+.cga-green {
+    @include cga-text($cga-green);
+}
+
+.cga-cyan {
+    @include cga-text($cga-cyan);
+}
+
+.cga-red {
+    @include cga-text($cga-red);
+}
+
+.cga-magenta {
+    @include cga-text($cga-magenta);
+}
+
+.cga-brown {
+    @include cga-text($cga-brown);    
+}
+
+.cga-light-gray {
+    @include cga-text($cga-light-gray);
+}
+
+.cga-dark-gray {
+    @include cga-text($cga-dark-gray);
+}
+
+.cga-light-blue {
+    @include cga-text($cga-light-blue);
+}
+
+.cga-light-green {
+    @include cga-text($cga-light-green);
+}
+
+.cga-light-cyan {
+    @include cga-text($cga-light-cyan);
+}
+
+.cga-light-red {
+    @include cga-text($cga-light-red);
+}
+
+.cga-light-magenta {
+    @include cga-text($cga-light-magenta);
+}
+
+.cga-yellow {
+    @include cga-text($cga-yellow);
+}
+
+.cga-white {
+    @include cga-text($cga-white);
+}
+*/

@@ -1,0 +1,42 @@
+$console-fg: #14fdce;
+$console-bg: #031e11;
+
+$cga-black: #000000;
+$cga-blue: #0000AA;
+$cga-green: #00AA00;
+$cga-cyan: #00AAAA;
+$cga-red: #AA0000;
+$cga-magenta: #AA00AA;
+$cga-brown: #AA5500;
+$cga-light-gray: #AAAAAA;
+$cga-dark-gray: #555555;
+$cga-light-blue: #5555FF;
+$cga-light-green: #55FF55;
+$cga-light-cyan: #55FFFF;
+$cga-light-red: #FF5555;
+$cga-light-magenta: #FF55FF;
+$cga-yellow: #FFFF55;
+$cga-white: #FFFFFF;
+
+$cga-colours: 'black', 'blue', 'green', 'cyan', 'red', 'magenta', 'brown',
+              'light-gray', 'dark-gray', 'light-blue', 'light-green', 'light-cyan',
+              'light-red', 'light-magenta', 'yellow', 'white';
+
+$cga-colours-map: (
+    'black': $cga-black,
+    'blue': $cga-blue,
+    'green': $cga-green,
+    'cyan': $cga-cyan,
+    'red': $cga-red,
+    'magenta': $cga-magenta,
+    'brown': $cga-brown,
+    'light-gray': $cga-light-gray,
+    'dark-gray': $cga-dark-gray,
+    'light-blue': $cga-light-blue,
+    'light-green': $cga-light-green,
+    'light-cyan': $cga-light-cyan,
+    'light-red': $cga-light-red,
+    'light-magenta': $cga-light-magenta,
+    'yellow': $cga-yellow,
+    'white': $cga-white
+);
