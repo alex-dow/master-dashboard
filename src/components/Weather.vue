@@ -12,7 +12,7 @@
         <img :src="current_icon"/>
       </div>
       <div class="weather-info">
-        <Typer :content="current_temperature" class="cga-green"/>
+        <Typer :content="current_temperature" class="cga-light-green"/>
       </div>
 
     </div>
