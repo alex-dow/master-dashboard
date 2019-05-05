@@ -12,8 +12,8 @@ module.exports = {
   devServer: {
       host: 'localhost',
       https: {
-          key: fs.readFileSync('/home/adowgail/.certs/localhost-certs/localhost.key'),
-          cert: fs.readFileSync('/home/adowgail/.certs/localhost-certs/localhost.crt'),
+          key: fs.readFileSync('/home/v0idnull/certs/localhost.key'),
+          cert: fs.readFileSync('/home/v0idnull/certs/localhost.crt'),
       },
 
       proxy: {

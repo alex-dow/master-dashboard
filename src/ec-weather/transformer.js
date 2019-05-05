@@ -22,17 +22,16 @@ function ccBuilder(item) {
   const readings = item.summary.split('\n');
 
   readings.forEach((reading) => {
-    console.log('reading:', reading);
-
     const parts = reading.split(/:(.+)/);
     const key = camelCase(parts[0].trim().replace('/', '_'));
-    const val = parts[1].trim();
-
-    newItem[key] = val;
+    if (parts[1]) {
+      newItem[key] = parts[1].trim();
+    } else {
+      newItem[key] = '';
+    }
   });
 
   newItem.summary = item.summary.replace(new RegExp('\\s?\\n', 'gm'), ' | ');
-
 
   return newItem;
 }

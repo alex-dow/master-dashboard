@@ -1,12 +1,12 @@
 <template>
 <div class="news-box">
     <h1 class="cga-yellow">
-        <Typer content="Headlines" @rendered="process_feed"/> 
+        <Typer content="Headlines" @rendered="process_feed"/>
         <div class="loader-container" v-if="loading">
             <Loader/>
         </div> 
     </h1>
-    <p class="cga-green">
+    <p class="cga-light-green content">
         <Typer :content="headline" :minSpeed="30" :maxSpeed="80"/>
     </p>
     <!--
@@ -102,14 +102,28 @@ export default Vue.extend({
 @import '@/sass/colours.scss';
 @import '@/sass/cga-display.scss';
 
-.news-box h1 {
+.news-box {
+  height: 35%;
+  h1 {
+    line-height: 1rem;
     display: flex;
     flex-flow: row;
     align-items: center;
-}
+    font-size: 42pt;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+  .content {
+    margin: 0;
+    padding: 0;
+    font-size: 38pt;
+    line-height: 2rem;
+  }
 
-.news-box .loader-container {
+  .loader-container {
     margin-left: 2rem;
+  }
 }
 
 </style>

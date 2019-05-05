@@ -18,15 +18,12 @@
 
   <div class="content-container">
     <NewsBox/>
+    <Weather/>
   </div>
 
-  <div class="glow">
+  <Glow/>
 
-  </div>
-
-  <div class="shadow">
-
-  </div>
+  <div class="shadow"></div>
 
 </div>
 </template>
@@ -37,13 +34,15 @@ import Typer from '@/components/Typer.vue';
 import Clock from '@/components/Clock.vue';
 import SignalLight from '@/components/SignalLight.vue';
 import NewsBox from '@/components/News.vue';
+import Weather from '@/components/Weather.vue';
+import Glow from '@/components/Glow.vue';
 
 import rss from 'rss-parser-browser';
 
-import GtfsRealtimeBindings = require('gtfs-realtime-bindings');
+import GtfsRealtimeBindings from 'gtfs-realtime-bindings';
 
 import reader from '@/ec-weather/reader.js';
-import transformer from '@/ec-weather/transformer.js';
+
 
 import axios from 'axios';
 
@@ -55,54 +54,15 @@ export default Vue.extend({
     Typer,
     Clock,
     SignalLight,
-    NewsBox
+    NewsBox,
+    Weather,
+    Glow
   },
 
   data() {
     return {
-      headlines: []
     }
   },
-
-  methods: {
-    async load_feed() {
-      return new Promise((resolve, reject) => {
-        rss.parseURL(NEWS_RSS_FEED, function(err : any, parsed : any) {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(parsed);
-          }
-        });
-      });
-    },
-
-    async load_weather() {
-
-      const res = await axios.get('/rss/weather/envcanada/montreal');
-
-      const weather = await reader(res.data);
-
-      console.log('weather:', weather);
-      const weather_data = transformer('en', 'qc-147', weather);
-
-      return weather_data;
-    },
-
-    async process_weather() {
-      const rss = await this.load_weather();
-      console.log('weather:', rss);
-    },
-
-    async process_feed() {
-      this.process_weather();
-      const rss = await this.load_feed();
-
-      for (var i = 0; i < 5; i++) {
-        this.headlines.push(rss.feed.entries[i].title);
-      }
-    }
-  }
 });
 </script>
 
@@ -146,36 +106,26 @@ html,body {
   .content-container {
     z-index: 4;
     //border: 1px solid darken($cga-dark-gray, 20%);
-    width: 33%;
+    width: 50%;
     padding: 1rem;
     height: 91%;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.8);
     font-family: 'VT323', monospace;
+    
     //height: 10%;
     //overflow: hidden;
   }
 
-  .glow {
-    background: radial-gradient(circle at center, rgba(15, 177, 69, 1), ease-in-out, rgba(10, 23, 12, 0));
-    opacity: 0.15;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    filter: blur(1px);
-  }
-
   .shadow {
-  box-shadow:
-    inset 0 0 4rem black,
-    inset 0 0 2rem  black,
-    inset 0 0 4rem black;
+    box-shadow:
+      inset 0 0 10rem black,
+      inset 0 0 10rem  black,
+      inset 0 0 10rem black;
     position: fixed;
     background-color: transparent;
     width: 100%;
     height: 100%;
     z-index: 3;
-    filter: blur(2px);
   }
 
   .signals {

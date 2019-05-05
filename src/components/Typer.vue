@@ -64,6 +64,11 @@ export default Vue.extend({
         render() {
             this.render_next();
 
+            if (!this.content) {
+              this.$emit('rendered');
+              return;
+            }
+
             if (this.idx < this.content.length) {
                 this.render_timer = setTimeout(() => {
                     this.render();
