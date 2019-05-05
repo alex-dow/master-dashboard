@@ -82,7 +82,14 @@ export default {
       current_icon: '',
       current_temperature: '',
       tomorrow_icon: '',
-      two_day_icon: ''
+      two_day_icon: '',
+      refresh_timer: null
+    }
+  },
+
+  props: {
+    refresh: {
+      default: 1800000
     }
   },
 
@@ -120,8 +127,17 @@ export default {
 
   },
 
+  beforeDestroy() {
+    if (this.refresh_timer) {
+      clearInterval(this.refresh_timer);
+    }
+  },
+
   mounted() {
     this.load_weather();
+    this.refresh_timer = setInterval(() => {
+      this.load_weather();
+    }, this.refresh);
   }
 
 }

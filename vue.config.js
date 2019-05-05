@@ -10,7 +10,7 @@ module.exports = {
   },
 
   devServer: {
-      host: 'localhost',
+      host: '0.0.0.0',
       https: {
           key: fs.readFileSync('/home/v0idnull/certs/localhost.key'),
           cert: fs.readFileSync('/home/v0idnull/certs/localhost.crt'),
