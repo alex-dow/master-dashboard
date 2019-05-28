@@ -247,7 +247,7 @@ class ComputersComponent extends Vue {
     } else if (msg.sender === 'ip_addr') {
       this.computers[this.computer_cache[msg.hostname]].ip_addrs = msg.message;
     } else if (msg.sender === 'mem') {
-      this.computers[this.computer_cache[msg.hostname]].mem = (msg.message[1] / msg.message[0]) * 100;
+      this.computers[this.computer_cache[msg.hostname]].mem = 100 - (msg.message[1] / msg.message[0]) * 100;
     }
 
     this.computer_last_msg[msg.hostname] = Date.now();
