@@ -36,7 +36,7 @@
 		-o-border-radius: 50%;
 		-ms-border-radius: 50%;
 		-webkit-border-radius: 50%;
-		-moz-border-radius: 50%;	
+		-moz-border-radius: 50%;
 }
 
 .cssload-inner.cssload-one {
@@ -61,7 +61,7 @@
 		-moz-animation: cssload-rotate-two 1.15s linear infinite;
     border-right: 3px solid $cga-cyan;
     box-shadow: 0 0 0.5rem darken($cga-cyan, 20%);
-    
+
 }
 
 .cssload-inner.cssload-three {
@@ -217,3 +217,14 @@
 	}
 }
 </style>
+
+<script lang="ts">
+
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class Loader extends Vue {
+
+}
+
+</script>

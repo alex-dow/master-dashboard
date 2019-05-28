@@ -12,7 +12,7 @@ import { random } from '@/utils/math.ts';
 type Data = {
     rendered: String,
     idx: number,
-    render_timer: null | number
+    render_timer: null | ReturnType<typeof setTimeout>
 }
 
 export default Vue.extend({
@@ -27,7 +27,8 @@ export default Vue.extend({
     props: {
         content: {
             required: true,
-            type: String
+            type: String,
+            default: ''
         },
 
         minSpeed: {
@@ -52,6 +53,9 @@ export default Vue.extend({
 
     methods: {
         render_next() {
+          if (!this.content) {
+            return;
+          }
             this.idx++;
 
             if (this.idx === this.content.length) {

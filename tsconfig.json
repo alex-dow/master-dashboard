@@ -1,18 +1,27 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "es2015",
     "strict": true,
     "jsx": "preserve",
+    "noImplicitAny": false,
     "importHelpers": true,
     "moduleResolution": "node",
-    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ],
     "types": [
+      "vue-mqtt",
+      "rickshaw",
       "webpack-env",
-      "jest"
+      "jest",
+      "node"
     ],
     "paths": {
       "@/*": [

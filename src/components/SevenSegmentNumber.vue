@@ -4,28 +4,24 @@
 
 <script lang="ts">
 
-import Vue from 'vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
-export default Vue.extend({
-    computed: {
-        digitClass() {
-            if (this.digit === '.') {
-                return 'segment-doton';
-            } else if (this.digit === '') {
-                return 'segment-dotoff';
-            } else {
-                return 'segment-' + this.digit; 
-            }
-        }
-    },
+@Component
+export default class SevenSegmentNumber extends Vue {
 
-    props: {
-        digit: {
-            required: true,
-            default: ''
-        }
+  @Prop({required: true}) readonly digit!: number | string;
+
+  get digitalClass() {
+    if (this.digit === '.') {
+        return 'segment-doton';
+    } else if (this.digit === '') {
+        return 'segment-dotoff';
+    } else {
+        return 'segment-' + this.digit;
     }
-});
+  }
+
+}
 
 </script>
 

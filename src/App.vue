@@ -1,69 +1,75 @@
 <template>
-
 <div class="container">
   <div class="title-bar">
-
-    <Clock class="title" style="margin-right: 0.5rem"/>
-
-    <div class="signals">
-      <div class="signal">
-        <SignalLight :value="true" label="Websockets"/>
-      </div>
-      <div class="signal">
-        <SignalLight :value="false" label="MQTT Confirmed" />
-      </div>
-    </div>
-    
+    <Clock class="title" style="margin-right: 0.5rem; display: inline-block"/>
   </div>
 
   <div class="content-container">
     <NewsBox/>
     <Weather/>
   </div>
+  <div class="content-container">
+    <Computers/>
+  </div>
+
+<!--
+  <div class="servers-list">
+    <h1 class="cga-yellow">Servers</h1>
+    <ul>
+      <li>
+        <SignalLight :value="true"><h2 class="cga-green" style="margin: 0; padding: 0">neuromancer</h2></SignalLight><br/>
+
+        <span class="cga-cyan">CPU:</span> <span class="cga-red">100%</span>
+        <span class="cga-cyan">MEM:</span> <span class="cga-red">100%</span>
+      </li>
+    </ul>
+  </div>
+-->
 
   <Glow/>
 
-  <div class="shadow"></div>
+  <!--<div class="shadow"></div>-->
 
 </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Vue, Component } from 'vue-property-decorator';
 import Typer from '@/components/Typer.vue';
 import Clock from '@/components/Clock.vue';
 import SignalLight from '@/components/SignalLight.vue';
 import NewsBox from '@/components/News.vue';
 import Weather from '@/components/Weather.vue';
 import Glow from '@/components/Glow.vue';
-
-import rss from 'rss-parser-browser';
-
-import GtfsRealtimeBindings from 'gtfs-realtime-bindings';
-
-import reader from '@/ec-weather/reader.js';
-
-
+import Logger from '@/components/Logger.vue';
 import axios from 'axios';
+import Computers from '@/components/Computers.vue';
+
+/*
+import rss from 'rss-parser-browser';
+import GtfsRealtimeBindings from 'gtfs-realtime-bindings';
+*/
 
 const NEWS_RSS_FEED = '/rss/news/cbc/montreal';
 
-export default Vue.extend({
+@Component({
   name: 'app',
   components: {
-    Typer,
     Clock,
-    SignalLight,
     NewsBox,
     Weather,
-    Glow
-  },
+    Glow,
+    Logger,
+    Computers
+  }
+})
+export default class App extends Vue {
+  $mqtt!: any;
 
-  data() {
-    return {
-    }
-  },
-});
+  mounted() {
+    this.$mqtt.subscribe('#');
+  }
+}
 </script>
 
 <style lang="scss">
@@ -81,15 +87,6 @@ html,body {
   margin: 0; padding: 0;
 }
 
-.title-bar {
-  background-color: black;
-  width: 100%;
-  height: 9%;
-  display: flex;
-  flex-flow: row;
-  justify-content:right;
-  align-items: center;
-}
 
 * {
   box-sizing: border-box;
@@ -103,24 +100,45 @@ html,body {
   flex-flow: row;
   flex-wrap: wrap;
 
+
+
+  .title-bar {
+    background-color: black;
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: right;
+    text-align: right;
+  }
+
   .content-container {
+    overflow: hidden;
     z-index: 4;
-    //border: 1px solid darken($cga-dark-gray, 20%);
     width: 50%;
     padding: 1rem;
-    height: 91%;
+    height: 90vh;
     background-color: rgba(0,0,0,0.8);
     font-family: 'VT323', monospace;
-    
-    //height: 10%;
-    //overflow: hidden;
+  }
+
+  .servers-list {
+    flex: 1 1 auto;
+    z-index: 4;
+    width: 50%;
+    height: 91%;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.4);
+    font-family: 'VT323', monospace;
+
+    ul, li {
+      list-style: none;
+      padding: 0; margin: 0;
+    }
   }
 
   .shadow {
-    box-shadow:
-      inset 0 0 10rem black,
-      inset 0 0 10rem  black,
-      inset 0 0 10rem black;
     position: fixed;
     background-color: transparent;
     width: 100%;
@@ -129,14 +147,11 @@ html,body {
   }
 
   .signals {
-    display: flex;
-    flex-flow: column;
-
+    display: inline-block;
     .signal {
       margin-bottom: 0.5rem;
     }
   }
-
 }
 
 

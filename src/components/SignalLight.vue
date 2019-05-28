@@ -2,10 +2,12 @@
 
 <div class="light-container">
     <div class="light" :class="'light-cga-' + light_colour">
-        
+
     </div>
     <div class="label">
-        <Typer :content="label" :class="'cga-' + light_colour" />
+        <slot>
+          <span class="label-text"><Typer :content="label" :class="'cga-' + light_colour" /></span>
+        </slot>
     </div>
 </div>
 
@@ -29,7 +31,7 @@
     @each $name, $colour in $cga-colours-map {
         .light-cga-#{$name} {
             background: $colour;
-            box-shadow: 0 0 0.5rem 0.5rem darken($colour, 20%);
+            box-shadow: 0 0 0.3rem 0.3rem darken($colour, 20%);
             @include light;
         }
     }
@@ -44,7 +46,7 @@
 
     @include light-colours;
 
-    .label {
+    .label-text {
         color: #fff;
         font-family: 'VT323', monospace;
         font-size: 10pt;
