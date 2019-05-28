@@ -2,8 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import VueMqtt from 'vue-mqtt';
+import { random } from '@/utils/math';
 
-const mqtt_scheme = (window.location.protocol === 'https:')? 'mqtts' : 'mqtt';
+const mqtt_scheme = (window.location.protocol === 'https:')? 'wss' : 'ws';
 const mqtt_host = window.location.host;
 const mqtt_url = `${mqtt_scheme}://${mqtt_host}/mqtt`;
 
@@ -11,9 +12,9 @@ console.log(mqtt_url);
 
 Vue.use(VueMqtt, mqtt_url, {
   rejectUnauthorized: false,
-  clean: true,
+  clean: false,
   secure: true,
-  clientId: 'dashboard'
+  clientId: 'dashboard-' + random(1, 1000)
 });
 
 Vue.config.productionTip = false

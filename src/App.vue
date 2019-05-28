@@ -43,12 +43,7 @@ import Weather from '@/components/Weather.vue';
 import Glow from '@/components/Glow.vue';
 import Logger from '@/components/Logger.vue';
 import axios from 'axios';
-import Computers from '@/components/Computers.vue';
-
-/*
-import rss from 'rss-parser-browser';
-import GtfsRealtimeBindings from 'gtfs-realtime-bindings';
-*/
+import Computers from '@/components/Computers2.vue';
 
 const NEWS_RSS_FEED = '/rss/news/cbc/montreal';
 
@@ -67,7 +62,9 @@ export default class App extends Vue {
   $mqtt!: any;
 
   mounted() {
-    this.$mqtt.subscribe('#');
+    this.$mqtt.subscribe('psistats2/+/cpu_total');
+    this.$mqtt.subscribe('psistats2/+/uptime');
+    this.$mqtt.subscribe('psistats2/+/ip_addr');
   }
 }
 </script>

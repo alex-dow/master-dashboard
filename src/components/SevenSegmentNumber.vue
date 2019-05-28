@@ -11,7 +11,7 @@ export default class SevenSegmentNumber extends Vue {
 
   @Prop({required: true}) readonly digit!: number | string;
 
-  get digitalClass() {
+  get digitClass() {
     if (this.digit === '.') {
         return 'segment-doton';
     } else if (this.digit === '') {

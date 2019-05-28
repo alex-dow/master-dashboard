@@ -22,7 +22,8 @@
           </div>
         </div>
       </div>
-      <cpu-graph v-model="computer.cpu" :id="'graph-' + computer.hostname" v-if="bad_computers[computer.hostname] === false"/>
+      <ComputerMeter v-model="computer.cpu"/>
+      <!-- <cpu-graph v-model="computer.cpu" :id="'graph-' + computer.hostname" v-if="bad_computers[computer.hostname] === false"/>-->
     </div>
   </div>
 </div>
@@ -32,6 +33,7 @@
 
 @import '@/sass/standards.scss';
 @import '@/sass/cga-display.scss';
+@import '@/sass/colours.scss';
 
 .blink {
   animation: blinker 1s linear infinite;
@@ -61,14 +63,13 @@
 
 .computer {
   min-height: 5rem;
-
+  display: flex;
+  flex-flow: row;
 
   .computer-header {
     display: flex;
-    flex-flow: row;
-    h2 {
-      width: 50%;
-    }
+    width: 50%;
+    flex-flow: column;
 
     .iface {
       color: $cga-light-blue;
@@ -84,6 +85,7 @@
   h2 {
     color: $cga-light-magenta;
     margin: 0; padding: 0;
+    font-size: 32pt;
   }
 }
 </style>
@@ -92,6 +94,7 @@
 
 import Typer from '@/components/Typer.vue';
 import CpuGraph from '@/components/CpuGraph.vue';
+import ComputerMeter from '@/components/Meter.vue';
 import {Vue, Component} from 'vue-property-decorator';
 
 interface Message {
@@ -103,11 +106,11 @@ interface Message {
 @Component({
   components: {
     Typer,
-    CpuGraph
+    CpuGraph,
+    ComputerMeter
   },
   mqtt: {
     "psistats2/#"(this: ComputersComponent, msg: any) {
-
       msg = JSON.parse(msg.toString());
       this.process_message(msg);
     }
@@ -249,7 +252,7 @@ class ComputersComponent extends Vue {
   beforeDestroy() {
     Object.keys(this.computer_timers).forEach((timerName) => {
       if (this.computer_timers[timerName]) {
-        window.clearInterval(this.computer_timers[timerName]);
+        clearInterval(this.computer_timers[timerName]);
       }
     });
   }
