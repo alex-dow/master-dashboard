@@ -22,7 +22,8 @@
           </div>
         </div>
       </div>
-      <ComputerMeter v-model="computer.cpu"/>
+      <ComputerMeter v-model="computer.cpu" label="CPU"/>
+      <ComputerMeter v-model="computer.mem" label="MEM"/>
       <!-- <cpu-graph v-model="computer.cpu" :id="'graph-' + computer.hostname" v-if="bad_computers[computer.hostname] === false"/>-->
     </div>
   </div>
@@ -218,6 +219,7 @@ class ComputersComponent extends Vue {
 
       this.$set(responsive, 'cpu', 0);
       this.$set(responsive, 'ip_addrs', []);
+      this.$set(responsive, 'mem', 0);
       //this.$set(this.computer_ip_addrs, msg.hostname, '');
       this.computers.push(responsive);
       this.computer_ip_addrs.push('');
@@ -244,6 +246,8 @@ class ComputersComponent extends Vue {
       this.computers[this.computer_cache[msg.hostname]].cpu = msg.message;
     } else if (msg.sender === 'ip_addr') {
       this.computers[this.computer_cache[msg.hostname]].ip_addrs = msg.message;
+    } else if (msg.sender === 'mem') {
+      this.computers[this.computer_cache[msg.hostname]].mem = (msg.message[1] / msg.message[0]) * 100;
     }
 
     this.computer_last_msg[msg.hostname] = Date.now();

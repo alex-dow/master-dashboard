@@ -4,13 +4,13 @@
     <div class="vu-meter-light" :style="{'height': (100 - value) + '%'}"/>
   </div>
   <div class="vu-meter-amount">
-    <span class="cga-cyan">CPU</span>
+    <span class="cga-cyan">{{ label }}</span>
     <br/>
     <span
       :class="{
-        'cga-green': value < 40,
+        'cga-light-green': value < 40,
         'cga-yellow': value >= 40 && value < 80,
-        'cga-red': value >= 80
+        'cga-light-red': value >= 80
       }">{{ roundedValue }}%
     </span>
   </div>
@@ -39,7 +39,7 @@
 }
 
 .vu-meter[class$="low"] {
-    background-color: $cga-green;
+    background-color: $cga-light-green;
 }
 
 .vu-meter[class$="medium"] {
@@ -47,11 +47,11 @@
 }
 
 .vu-meter[class$="high"] {
-    background-color: $cga-red;
+    background-color: $cga-light-red;
 }
 
 .vu-meter-amount {
-  font-size: 24pt;
+  font-size: 30pt;
 
 }
 
@@ -74,6 +74,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class Meter extends Vue {
 
   @Prop({default: 0}) readonly value!: number;
+  @Prop(String) readonly label!: string;
 
   get roundedValue(): number {
     return Math.ceil(this.value);

@@ -63,7 +63,7 @@ export default class App extends Vue {
 
   mounted() {
     this.$mqtt.subscribe('psistats2/+/cpu_total');
-    this.$mqtt.subscribe('psistats2/+/uptime');
+    this.$mqtt.subscribe('psistats2/+/mem');
     this.$mqtt.subscribe('psistats2/+/ip_addr');
   }
 }
