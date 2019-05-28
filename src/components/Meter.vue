@@ -1,6 +1,9 @@
 <template>
 <div class="computer-meter">
-  <div class="vu-meter low">
+  <div class="vu-meter" :class="{
+      'low': value < 40,
+      'medium': value >= 40 && value < 80,
+      'high': value >= 80}">
     <div class="vu-meter-light" :style="{'height': (100 - value) + '%'}"/>
   </div>
   <div class="vu-meter-amount">
