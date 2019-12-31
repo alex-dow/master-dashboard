@@ -1,48 +1,21 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "es2015",
-    "strict": true,
-    "jsx": "preserve",
-    "noImplicitAny": false,
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ],
-    "types": [
-      "vue-mqtt",
-      "rickshaw",
-      "webpack-env",
-      "jest",
-      "node"
-    ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
+    "compilerOptions": {
+      "module": "es6",
+      "moduleResolution": "node",
+      "target": "es2015",
+      "sourceMap": true,
+      "baseUrl": "./packages",
+      "paths": {
+          "@retro-dashboard/segment-number": ["segment-number/src"],
+          "@retro-dashboard/segment-clock": ["segment-clock/src"],
+          "@retro-dashboard/server": ["server/src"],
+          "@retro-dashboard/webapp": ["webapp/src"],
+          "@retro-dashboard/*": ["*/src"],
+      }
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
+
+    "exclude": [
+       "node_modules",
+        "dist"
     ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
 }

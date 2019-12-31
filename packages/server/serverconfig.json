@@ -1,0 +1,33 @@
+{
+  "port": 9999,
+  "psistats": {
+    "mqtt": {
+      "hostname": "",
+      "port": 1234,
+      "username": "",
+      "password": ""
+    }
+  },
+  "weather": {
+    "plugin": "EnvironmentCanada",
+    "configuration": {
+      "province": "QC",
+      "cityId": "s0000635"
+    }
+  },
+  "news": {
+    "plugin": "RssFeed",
+    "configuration": {
+      "feeds": [{
+        "title": "Local News",
+        "url": "https://rss.cbc.ca/lineup/canada-montreal.xml"
+      }, {
+        "title": "National News",
+        "url": "https://www.cbc.ca/cmlink/rss-canada"
+      }, {
+        "title": "World News",
+        "url": "https://www.cbc.ca/cmlink/rss-world"
+      }]
+    }
+  }
+}

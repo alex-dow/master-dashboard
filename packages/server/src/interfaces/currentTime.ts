@@ -1,0 +1,3 @@
+interface CurrentTime {
+  timestamp: number
+};
