@@ -29,7 +29,7 @@
     <segment-clock :blink="true"/>
   </div>
   <div class="weather-warning-box" v-if="warnings.length > 0">
-    {{ warnings[0].title }}
+    <p>{{ warnings[0].title }}</p>
   </div>
 
 </div>
@@ -47,15 +47,25 @@
   flex-flow: row wrap;
 
   .weather-warning-box {
+    border-top: 2px solid $cga-light-red;
+    border-bottom: 2px solid $cga-light-red;
     width: 100%;
     background-color: $cga-red;
     //height: 5vh;
     @include cga-text($cga-black);
     // color: $cga-black;
     font-size: 4em;
+    font-weight: 900;
     padding: 0; margin: 0;
-    //line-height: 0.75em;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    line-height: 1.2em;
     text-align: center;
+    margin: 0; padding: 0;
+    p {
+      margin: 0; padding: 0;
+    }
   }
 
   .weather-clock {
