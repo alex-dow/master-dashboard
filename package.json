@@ -10,6 +10,7 @@
   },
   "name": "retro-dashboard",
   "scripts": {
-    "build": "build/build.sh"
+    "build": "build/build.sh",
+    "serve": "cd packages/webapp && yarn serve"
   }
 }
