@@ -5,22 +5,26 @@
 
   <div class="weather-item">
     <h4>CURRENT</h4>
-    <p class="temperature">
-      {{ current.temp }}&deg;
-    </p>
-    <p class="temperature feelsLike">
-      {{ current.feelsLike }}&deg;
-    </p>
+    <div class="temperature">
+      <p>
+        Temperature: <span class="realtemp">{{ current.temp }}&deg;</span>
+      </p>
+      <p>
+        Feels Like: <span class="feelslike">{{ current.feelsLike }}&deg;</span>
+      </p>
+    </div>
   </div>
 
   <div class="weather-item">
     <h4>TOMORROW</h4>
-    <p class="temperature">
-      {{ forecast[0].dayTemp }}&deg;
-    </p>
-    <p class="temperature feelsLike">
-      {{ forecast[0].dayFeelsLikeTemp }}&deg;
-    </p>
+    <div class="temperature">
+      <p>
+        Temperature: <span class="realtemp">{{ forecast[0].dayTemp }}&deg;</span>
+      </p>
+      <p>
+        Feels Like: <span class="feelslike">{{ forecast[0].dayFeelsLikeTemp }}&deg;</span>
+      </p>
+    </div>
   </div>
 
   </div>
@@ -86,22 +90,32 @@
     @include cga-text($cga-white);
     align-items: center;
 
+    .temperature {
+      display: flex;
+      flex-flow: row;
+      align-items: stretch;
+    }
+
     h4 {
 
       padding: 0; margin: 0;
       font-size: 5em;
-      width: 55%;
+      width: 50%;
       @include cga-text($cga-yellow);
     }
 
     p {
-      text-align: right;
       padding: 0; margin: 0;
-      font-size: 4em;
-      width: 15%;
+      font-size: 2em;
     }
 
-    p.feelsLike {
+
+    .realtemp {
+      font-size: 2.5em;
+      @include cga-text($cga-white);
+    }
+    .feelslike {
+      font-size: 2.5em;
       @include cga-text($cga-light-green);
     }
   }
@@ -148,7 +162,7 @@
 
 import { Prop, Component, Vue } from 'vue-property-decorator';
 import { Get } from 'vuex-pathify';
-import { WeatherItem, WeatherWarning, CurrentWeatherItem } from '@retro-dashboard/library/dist/interfaces/weather';
+import { WeatherWarning, WeatherItem, CurrentWeatherItem } from '@retro-dashboard/library';
 
 @Component
 export default class Weather extends Vue {

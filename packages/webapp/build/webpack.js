@@ -106,8 +106,10 @@ const config = {
     }]
   },
   node: {
-    __dirname: isDevelopment,
-    __filename: isDevelopment
+    tls: 'empty',
+    child_process: 'empty',
+    fs: 'empty',
+    net: 'empty'
   },
   plugins: [
     new VueLoaderPlugin(),

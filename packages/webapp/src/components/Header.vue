@@ -1,15 +1,10 @@
 <template>
 <header class="main-header">
-  <segment-clock :blink="true"/>
-  <div class="current-temp">
-    {{ currentTemp }}&deg;C <img :src="'https://weather.gc.ca/weathericons/' + currentConditionCode + '.gif'"/><br/>
-    {{ currentCondition }}
+  <div class="logo">
+    TEMPERATURE: -30.2&deg;C
   </div>
-  <div class="weather-icon">
-
-  </div>
-  <div class="weather-warning">
-    <span class="cga-red" id="warning-scroll-text">WEATHER WARNING</span>
+  <div class="clock-container">
+    <segment-clock blink="true"/>
   </div>
 </header>
 </template>
@@ -18,43 +13,23 @@
 @import '@/sass/cga-display.scss';
 @import '@/sass/animations.scss';
 
-.weather-warning {
-  border: 2px solid $cga-red;
-  text-align: center;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  overflow: hidden;
-
-  span {
-
-  // position: relative;
-    font-size: 48pt;
-    display: block;
-  }
-}
-
 .main-header {
-  width: 100vw;
-  height: 20vh;
   display: flex;
   flex-flow: row;
-  color: $cga-white;
+  width: 100%;
   align-items: center;
-  flex-wrap: wrap;
-}
 
-.current-temp {
-  font-size: 52pt;
-  padding-left: 1rem;
-  padding-right: 2rem;
-}
+  .logo {
+    font-size: 6vw;
+    width: 50%;
+    @include cga-text($cga-white);
+  }
 
-.weather-icon {
-  img {
-    transform: scale(1.5);
+  .clock-container {
+    width: 50%;
+    text-align: right;
   }
 }
-
 </style>
 <script lang="ts">
 

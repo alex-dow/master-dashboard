@@ -1,6 +1,6 @@
 @import '@/sass/colours.scss';
 @import '@/sass/cga-display.scss';
-// @import url('https://fonts.googleapis.com/css?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css?family=VT323&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Overpass+Mono|Share+Tech+Mono&display=swap');
 
 html,body {
@@ -8,19 +8,12 @@ html,body {
   width: 100%;
   background: #000000;
   margin: 0; padding: 0;
+  font-size: 4vw;
 }
-
-
-
-
-
-
-
-
 
 * {
   box-sizing: border-box;
-//  font-family: 'VT323', monospace;
-font-family: 'Share Tech Mono', monospace;
+  font-family: 'VT323', monospace;
+//font-family: 'Share Tech Mono', monospace;
 //font-family: 'Overpass Mono', monospace;
 }

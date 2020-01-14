@@ -1,3 +1,22 @@
 {
-    "extends": "../../tsconfig.json"
+  "compilerOptions": {
+      "outDir": "dist",
+      "emitDecoratorMetadata": true,
+      "declaration": false,
+      "esModuleInterop": true,
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "strict": true,
+      "experimentalDecorators": true,
+      "target": "ES2018",
+      "importHelpers": true,
+      "paths": {
+        "@/*": ["src/*"]
+      },
+      "baseUrl": ".",
+      "typeRoots": [
+        "./node_modules/@types",
+        "./typings"
+      ]
+  }
 }
