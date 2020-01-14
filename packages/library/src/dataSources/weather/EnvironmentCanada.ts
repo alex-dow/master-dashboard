@@ -1,7 +1,6 @@
 import { WeatherReport, WeatherType, WeatherItem, CurrentWeatherItem, WeatherWarningPriority, getWeather} from '../../interfaces/weather';
 import Axios from 'axios';
-import { JSDOM } from 'jsdom';
-import { getTagValue, getAttributeValue } from '../../utils';
+import * as parser from 'fast-xml-parser';
 
 export const ConditionMap: { [key: string]: WeatherType } = {
   'Mainly sunny': WeatherType.PartlyCloudy,
@@ -49,6 +48,77 @@ export interface EnvCanadaConfig {
   cityId: string
 };
 
+function getCondition(condition: string): WeatherType {
+  if (condition in ConditionMap) {
+    return ConditionMap[condition];
+  } else {
+    return WeatherType.Unknown;
+  }
+}
+
+function getWindChill(forecast: any): number {
+
+  if (forecast.hasOwnProperty('windChill') && forecast.windChill != '')  {
+
+    if (Array.isArray(forecast.windChill.calculated)) {
+      return parseFloat(forecast.windChill.calculated[0]);
+    } else {
+      return parseFloat(forecast.windChill.calculated);
+    }
+  } else {
+    return parseFloat(forecast.temperatures.temperature);
+  }
+}
+
+function getWindSpeed(forecast: any): number {
+  if (forecast.winds != '') {
+    if (Array.isArray(forecast.winds.wind)) {
+      return parseFloat(forecast.winds.wind.pop().speed);
+    } else {
+      return parseFloat(forecast.winds.wind.speed);
+    }
+  } else {
+    return 0;
+  }
+}
+
+function getWindGusts(forecast: any): number {
+  if (forecast.winds != '') {
+    if (Array.isArray(forecast.winds.wind)) {
+      return parseFloat(forecast.winds.wind.pop().gust);
+    } else {
+      return parseFloat(forecast.winds.wind.gust);
+    }
+  } else {
+    return 0;
+  }
+}
+
+function getForecastItem(forecasts: Array<any>, idx: number): WeatherItem {
+
+  const dayf = forecasts[idx];
+  const nightf = forecasts[idx + 1];
+
+  console.log(dayf.winds);
+
+  const item: WeatherItem = {
+    dayConditions: getCondition(dayf.abbreviatedForecast.textSummary),
+    dayFeelsLikeTemp: getWindChill(dayf),
+    dayRelativeHumidity: dayf.relativeHumidity,
+    dayTemp: dayf.temperatures.temperature,
+    dayWindGusts: getWindGusts(dayf),
+    dayWindSpeed: getWindSpeed(dayf),
+    nightConditions: getCondition(nightf.abbreviatedForecast.textSummary),
+    nightFeelsLikeTemp: getWindChill(nightf),
+    nightRelativeHumidity: nightf.relativeHumidity,
+    nightTemp: nightf.temperatures.temperature,
+    nightWindGusts: getWindGusts(nightf),
+    nightWindSpeed: getWindSpeed(nightf)
+  };
+
+  return item;
+}
+
 
 const envCanadaReport: getWeather = async (options: any): Promise<WeatherReport> => {
 
@@ -57,137 +127,26 @@ const envCanadaReport: getWeather = async (options: any): Promise<WeatherReport>
 
   const req = await Axios.get(url);
 
-  const dom = new JSDOM(req.data, {
-    contentType: 'text/xml'
-  });
-
-  const doc = dom.window.document;
-
-
-  const cc = dom.window.document.querySelector('currentConditions');
+  const siteData = parser.parse(req.data).siteData;
+  const cc = siteData.currentConditions;
+  const forecast = siteData.forecastGroup.forecast;
 
   let weatherReport: WeatherReport = {
-    currentReport: null,
-    forecast: new Array(),
+    currentReport: {
+      conditions: (cc.condition in ConditionMap)? ConditionMap[cc.condition] : WeatherType.Unknown,
+      feelsLike: cc.hasOwnProperty('windChill') ? cc.windChill : cc.temperature,
+      relativeHumidity: cc.relativeHumidity,
+      windGusts: cc.wind.gust == '' ? 0 : cc.wind.gust,
+      windSpeed: cc.wind.speed == '' ? 0 : cc.wind.speed,
+      temp: cc.temperature
+    },
+    forecast: [
+      getForecastItem(forecast, 1),
+      getForecastItem(forecast, 3),
+      getForecastItem(forecast, 5)
+    ],
     warnings: new Array()
   }
-
-
-
-  if (cc) {
-
-    let currentWeather: CurrentWeatherItem;
-
-    const condition = getTagValue(cc, 'condition', 'unknown');
-    const temperature  = parseFloat(getTagValue(cc, 'temperature', '0.0'));
-
-    let feelsLike = getTagValue(cc, 'windChill', null);
-    if (feelsLike === null) {
-      feelsLike = temperature;
-    }
-
-    const humidity = parseFloat(getTagValue(cc, 'relativeHumidity', 0));
-    const windSpeed = parseFloat(getTagValue(cc, 'wind speed', 0));
-    const windGusts = parseFloat(getTagValue(cc, 'wind gust', 0));
-
-    currentWeather = {
-      feelsLike: feelsLike,
-      relativeHumidity: humidity,
-      temp: temperature,
-      conditions: (condition in ConditionMap)? ConditionMap[condition] : WeatherType.Unknown,
-      windSpeed: windSpeed,
-      windGusts: windGusts
-    }
-
-    weatherReport.currentReport = currentWeather;
-  }
-
-  const forecasts = dom.window.document.querySelectorAll('forecast');
-
-  let counter = 1;
-
-  let forecastItems: Array<WeatherItem> = new Array();
-
-  for (; counter < forecasts.length - 1; ) {
-
-    let forecastItem: WeatherItem;
-
-    const dayForecast = forecasts.item(counter);
-
-    let dayTemp;
-    let dayFeelsLikeTemp;
-
-    let nightTemp;
-    let nightFeelsLikeTemp;
-
-    let dayConditions;
-    let nightConditions;
-
-    let dayWindSpeed;
-    let dayWindGusts;
-    let nightWindSpeed;
-    let nightWindGusts;
-
-    let dayHumidity;
-    let nightHumidity;
-
-    dayTemp = parseFloat(getTagValue(dayForecast, 'temperatures temperature[class="high"]', 0));
-    dayFeelsLikeTemp = getTagValue(dayForecast, 'windChill calculated', null);
-    if (dayFeelsLikeTemp === null) {
-      dayFeelsLikeTemp = dayTemp;
-    } else {
-      dayFeelsLikeTemp = parseFloat(dayFeelsLikeTemp);
-    }
-
-    dayConditions = getTagValue(dayForecast, 'abbreviatedForecast textSummary', 'unknown');
-    dayWindSpeed = parseFloat(getTagValue(dayForecast, 'winds wind speed', 0));
-    dayWindGusts = parseFloat(getTagValue(dayForecast, 'winds wind gust', 0));
-    dayHumidity  = parseFloat(getTagValue(dayForecast, 'relativeHumidity', 0));
-
-    counter++;
-    const nightForecast = forecasts.item(counter);
-
-    nightTemp = parseFloat(getTagValue(nightForecast, 'temperatures temperature[class="low"]', 0));
-    nightFeelsLikeTemp = getTagValue(nightForecast, 'windChill calculated', null);
-    if (nightFeelsLikeTemp === null) {
-      nightFeelsLikeTemp = nightTemp;
-    } else {
-      nightFeelsLikeTemp = parseFloat(nightFeelsLikeTemp);
-    }
-
-    nightConditions = getTagValue(nightForecast, 'abbreviatedForecast textSummary', 'unknown');
-    nightWindSpeed = parseFloat(getTagValue(nightForecast, 'winds wind speed', 0));
-    nightWindGusts = parseFloat(getTagValue(nightForecast, 'winds wind gust', 0));
-    nightHumidity  = parseFloat(getTagValue(nightForecast, 'relativeHumidity', 0));
-
-    forecastItem = {
-      dayConditions: (dayConditions in ConditionMap)? ConditionMap[dayConditions] : WeatherType.Unknown,
-      dayFeelsLikeTemp: dayFeelsLikeTemp,
-      dayRelativeHumidity: dayHumidity,
-      dayTemp: dayTemp,
-      dayWindGusts: dayWindGusts,
-      dayWindSpeed: dayWindSpeed,
-      nightConditions: (nightConditions in ConditionMap)? ConditionMap[nightConditions] : WeatherType.Unknown,
-      nightFeelsLikeTemp: nightFeelsLikeTemp,
-      nightRelativeHumidity: nightHumidity,
-      nightTemp: nightTemp,
-      nightWindGusts: nightWindGusts,
-      nightWindSpeed: nightWindSpeed
-    }
-
-    weatherReport.forecast.push(forecastItem);
-    counter++;
-  }
-
-  const warnings = doc.querySelectorAll('warnings event');
-
-  warnings.forEach((warning) => {
-    weatherReport.warnings.push({
-      description: '',
-      priority: WeatherWarningPriority.High,
-      title: getAttributeValue(warning, null, 'description', 'Unknown').trim()
-    });
-  });
 
   return weatherReport;
 }
@@ -195,10 +154,12 @@ const envCanadaReport: getWeather = async (options: any): Promise<WeatherReport>
 export default envCanadaReport;
 
 /*
-envcanada({
+envCanadaReport({
   baseUrl: null,
   province: EnvCanadaProvince.QC,
   cityId: 's0000635'
+  //province: EnvCanadaProvince.NU,
+  //cityId: 's0000412'
 })
 .then((report) => {
   console.log(report);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { NewsItem, getNews, NewsReport } from '../../interfaces/news';
-import { getTagValue } from '../../utils';
-import { JSDOM } from 'jsdom';
+import * as parser from 'fast-xml-parser';
+import striptags from 'striptags';
 
 interface RssFeedConfig {
   feeds: Array<RssFeedItem>
@@ -15,21 +15,13 @@ interface RssFeedItem {
 async function getRssFeed(rssFeed: string): Promise<Array<NewsItem>> {
   const rss = await axios.get(rssFeed);
 
-  const dom = new JSDOM(rss.data, {
-    contentType: 'text/xml'
-  });
-  const doc = dom.window.document;
+  const p = parser.parse(rss.data);
 
-  let items: Array<NewsItem> = new Array();
-
-  doc.querySelectorAll('item').forEach((item) => {
-    let description = new JSDOM(getTagValue(item, 'description', '')).window.document.body.textContent || '';
-    let title = getTagValue(item, 'title', '');
-
-    items.push({
-      title: title.trim(),
-      summary: description.trim()
-    });
+  let items: Array<NewsItem> = p.rss.channel.item.map((item: any): NewsItem => {
+    return {
+      title: item.title,
+      summary: striptags(item.description).trim()
+    };
   });
 
   return items;
@@ -69,3 +61,4 @@ const rssNews: getNews = (options: RssFeedConfig) => {
 }
 
 export default rssNews;
+
