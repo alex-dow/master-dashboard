@@ -34,7 +34,7 @@ module.exports = {
   },
   plugins: [
     new CopyPlugin([
-      { from: 'serverconfig.json', to: 'serverconfing.json' }
+      { from: 'serverconfig.json', to: 'serverconfig.json' }
     ])
   ]
 }
