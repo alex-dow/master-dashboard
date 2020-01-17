@@ -1,7 +1,6 @@
 <template>
 <div class="weather-container">
   <weather-item style="margin-right: 0.5rem"/>
-  <weather-item/>
   <weather-item style="margin-left: 0.5rem"/>
 </div>
 </template>

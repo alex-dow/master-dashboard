@@ -24,7 +24,7 @@
   text-align: center;
   //justify-content: center;
   //justify-items: center;
-  width: 28%;
+  width: 40%;
   //height: 50vh;
 }
 
@@ -36,19 +36,23 @@
 
 .weather-item-header {
   margin: 0; padding: 0;
-  font-size: 5vw;
+  font-size: 10vw;
   font-weight: normal;
   text-align: center;
   @include cga-text($cga-blue);
 }
 
 .weather-item-icon {
-  height: 200px;
+  height: 300px;
   background-color: $cga-black;
   width: 50%;
+  overflow: hidden;
   img {
-    width: 100%;
-    height: 100%;
+    width: 200%;
+    height: 200%;
+    position: relative;
+    top: -50%;
+    left: -50%;
   }
 }
 

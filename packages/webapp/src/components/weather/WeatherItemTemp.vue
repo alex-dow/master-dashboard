@@ -15,13 +15,13 @@
   }
 
   .real-temp {
-    font-size: 4vw;
+    font-size: 6vw;
     font-weight: bold;
     @include cga-text($cga-light-blue);
   }
 
   .feels-temp {
-    font-size: 3vw;
+    font-size: 5vw;
     @include cga-text($cga-black);
   }
 

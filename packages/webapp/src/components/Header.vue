@@ -1,7 +1,7 @@
 <template>
 <header class="main-header">
   <div class="logo">
-    TEMPERATURE: -30.2&deg;C
+    WEATHER FORECAST
   </div>
   <div class="clock-container">
     <segment-clock blink="true"/>
